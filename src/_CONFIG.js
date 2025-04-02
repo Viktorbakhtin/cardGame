@@ -1,7 +1,7 @@
 export const GameConfig = {
     MIN_CARD_LVL: 1, // min 1
     MAX_CARD_LVL: 13, //max 13
-    START_POOL: 2,
+    START_POOL: 30,
     WILD_CHANCE: 2, //20%
     MIN_DISTANCE_DRAG_MATCH: 65,
 
