@@ -3,6 +3,7 @@ import {CenterDeckComponent} from "../component/CenterDeck/CenterDeckComponent";
 import {HandDeckComponent} from "../component/HandDeck/HandDeckComponent";
 import {DragManager} from "../component/DragManager";
 import {BaseCardStore} from "../component/BaseCardStore";
+import {SoundManager} from "../component/SoundManager";
 
 export class PlayScene extends Phaser.Scene {
     constructor() {
@@ -16,5 +17,6 @@ export class PlayScene extends Phaser.Scene {
         new HandDeckComponent(this);
 
         new DragManager(this);
+        new SoundManager(this);
     }
 }

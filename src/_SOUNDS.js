@@ -1,0 +1,18 @@
+export const Sounds = {
+    BACKGROUND_MUSIC: "music1",
+    COIN_TAKE: "coin_take",
+    WIN_WINDOW: "win_window_music",
+    CORRECT_AUTO_MOVE: "correct_auto_move",
+    CORRECT_DRAG_MOVE: "correct_drag_move",
+    CORRECT_HOUSE_MOVE: "correct_house_move",
+    SELECT_CARD: "select_card",
+    BUTTON_CLICK: "button_click",
+    OPEN_CARD: "open_card",
+    BUTTON_OVER: "button_over",
+    WRONG_CLICK: "wrong_click",
+    WRONG_DRAG: "wrong_drag",
+    APPEAR_COIN: "appear_coin",
+    WIN_LEVEL: "level_stage_done",
+    COUNT: "count_321",
+    JOKER: "joker",
+};

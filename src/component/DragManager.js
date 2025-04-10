@@ -1,5 +1,6 @@
 class DragManager {
     constructor(scene) {
+        this.scene = scene
         scene.input.on('dragstart', this.handleDragStart.bind(this));
         scene.input.on('drag', this.handleDrag.bind(this));
         scene.input.on('dragend', this.handleDragEnd.bind(this));
@@ -7,7 +8,16 @@ class DragManager {
 
     handleDragStart(pointer, gameObject) {
         gameObject.setDepth(1000);
-        gameObject.setTint(0xDDDDDD);
+        // gameObject.setTint(0xFFD700);
+        app.emit(events.SOUND_PLAY, sounds.SELECT_CARD);
+        // const fx = gameObject.postFX.addGlow(0xFFD700, 0, 0, false, 0.1, 32);
+        gameObject.postFX.addBloom(0xFFD700, 1, 1, 2, 1);
+        // this.scene.tweens.add({
+        //     targets: fx,
+        //     targets: fx,
+        //     outerStrength: 8,
+        //     ease: 'sine.inout'
+        // });
     }
 
     handleDrag(pointer, gameObject, dragX, dragY) {
@@ -19,16 +29,34 @@ class DragManager {
         this.checkCard(gameObject);
         gameObject.setDepth(1);
         gameObject.clearTint();
+        gameObject.postFX.clear();
+        // gameObject.postFX.disable(true)
     }
 
     checkCard(gameObject) {
         const closestCard = this.findClosestCard(gameObject);
 
         if (closestCard && this.isLevelMatch(gameObject, closestCard)) {
-            this.emitCardEvents(gameObject, closestCard);
+            this.closestCardMoveToAnimation(gameObject, closestCard);
+            app.emit(events.SOUND_PLAY, sounds.CORRECT_DRAG_MOVE);
         } else {
+            app.emit(events.SOUND_PLAY, sounds.CORRECT_AUTO_MOVE);
             this.resetCardPosition(gameObject);
         }
+    }
+
+    closestCardMoveToAnimation(gameObject, closestCard){
+        this.scene.tweens.add({
+            targets: gameObject,
+            duration: 150,
+            x: [ gameObject.x, closestCard.x ],
+            y: [ gameObject.y, closestCard.y ],
+            ease: 'Cubic.easeOut',
+            onComplete: () => {
+                closestCard.playDropEffect(this.scene);
+                this.emitCardEvents(gameObject, closestCard);
+            }
+        });
     }
 
     emitCardEvents(draggedCard, closestCard) {
@@ -38,8 +66,17 @@ class DragManager {
     }
 
     resetCardPosition(card) {
-        card.x = card.originalX;
-        card.y = card.originalY;
+        const distance = Phaser.Math.Distance.Between(card.x, card.y, card.originalX, card.originalY);
+        const duration = Math.max(100, distance * 0.5);
+        this.scene.tweens.add({
+            targets: card,
+            duration: duration,
+            x: [ card.x, card.originalX ],
+            y: [ card.y, card.originalY ],
+            ease: 'Cubic.easeOut',
+        });
+        // card.x = card.originalX;
+        // card.y = card.originalY;
     }
 
     findClosestCard(draggedCard) {

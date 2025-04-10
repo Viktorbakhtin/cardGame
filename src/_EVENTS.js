@@ -8,4 +8,6 @@ export const EventTypes = {
     REMOVE_CARD_FROM_CENTER_DECK: 'removeCardFromCenterDeck',
     GET_ALL_CARDS_FROM_CENTER_DECK: 'getAllCardsFromCenterDeck',
     REMOVE_ALL_CARDS_IN_CENTER_DECK: 'removeAllCardsInCenterDeck',
+    SOUND_STOP: 'soundStop',
+    SOUND_PLAY: 'soundPlay',
 };

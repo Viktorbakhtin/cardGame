@@ -3,13 +3,14 @@ import Phaser from "phaser";
 class CardComponent extends Phaser.GameObjects.Sprite {
     constructor(id, scene, value, texture, x, y, draggable, level, clickEvent, arrowDirection, typeCard, deckKey) {
         super(scene, x, y, texture);
-
         this.id = id;
         this.value = value;
         this.level = level;
         this.deckKey = deckKey;
 
         this.sprite = scene.add.image(x, y, texture).setInteractive().setScale(0.75);
+        this.dust = scene.add.image(this.sprite.x, this.sprite.y, 'chip_dust').setVisible(false);
+
         this.sprite.originalX = x;
         this.sprite.originalY = y;
         this.sprite.name = id;
@@ -20,6 +21,34 @@ class CardComponent extends Phaser.GameObjects.Sprite {
         this.setDraggable(scene, draggable);
         this.setClickEvent(scene, clickEvent);
         this.setArrowDirection(scene, arrowDirection, x, y);
+
+        this.playDropEffect = (scene) => {
+            this.dust.setVisible(true);
+            this.dust.setDepth(this.sprite.depth - 1);
+            this.dust.setScale(0.6);
+            this.dust.setAlpha(0.9);
+
+            scene.tweens.add({
+                targets: this.dust,
+                scale: this.dust.scale + 0.2,
+                duration: 700,
+                ease: 'quart.out',
+                onComplete: () => {
+                    this.dust.setScale(0.6);
+                }
+            });
+
+            scene.tweens.add({
+                targets: this.dust,
+                alpha: 0,
+                delay: 400,
+                duration: 300,
+                onComplete: () => {
+                    this.dust.setVisible(false);
+                    this.dust.setAlpha(0.9);
+                }
+            });
+        }
     }
 
     setDraggable(scene, draggable) {

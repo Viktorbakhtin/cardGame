@@ -10,7 +10,13 @@ class App extends Phaser.Game {
             width: 1280,
             height: 1000,
             backgroundColor: 'rgb(69,82,69)',
-            scene: [BootScene, PlayScene, WinScene]
+            scene: [BootScene, PlayScene, WinScene],
+            fx: {
+                glow: {
+                    distance: 32,
+                    quality: 0.1
+                }
+            }
         });
 
         this.eventEmitter = new Phaser.Events.EventEmitter();
@@ -30,6 +36,14 @@ class App extends Phaser.Game {
 
     removeAllListeners() {
         this.eventEmitter.removeAllListeners();
+    }
+
+    soundAdd(key){
+        this.sound.add(key);
+    }
+
+    soundPlay(key){
+        this.sound.play(key)
     }
 }
 

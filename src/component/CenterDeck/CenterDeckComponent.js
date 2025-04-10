@@ -46,6 +46,7 @@ class CenterDeckComponent extends BaseDeckComponent{
     }
 
     flipCenterDeck() {
+        app.emit(events.SOUND_PLAY, sounds.BUTTON_CLICK);
         app.emit(events.REMOVE_ALL_CARDS_IN_CENTER_DECK);
         this.createCenterDeck();
     }
